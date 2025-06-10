@@ -29,8 +29,8 @@ The easiest way to run this project is using Docker. No need to install Node.js 
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/tu-usuario/claimclam-project.git
-   cd claimclam-project
+   git clone https://github.com/leonardoCoronel4/claimclam-takehome-assessment-solution
+   cd claimclam-takehome-assessment-solution/
    ```
 
 2. **Set up environment variables:**
@@ -89,8 +89,8 @@ If you prefer to run the project without Docker:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/tu-usuario/claimclam-project.git
-   cd claimclam-project
+   git clone https://github.com/leonardoCoronel4/claimclam-takehome-assessment-solution
+   cd claimclam-takehome-assessment-solution/
    ```
 
 2. **Install frontend dependencies:**

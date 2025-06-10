@@ -8,7 +8,6 @@ const { fetchTotalCount, fetchAllPodcasts } = require("./services/podcastService
 
 dotenv.config();
 
-const BASE_URL = process.env.PODCAST_API_URL;
 const app = express();
 
 const schema = buildSchema(`
