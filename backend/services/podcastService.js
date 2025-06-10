@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const BASE_URL = process.env.PODCAST_API_URL;
 
-async function fetchAllPodcasts({ page = 1, limit = 10, search = "" } = {}) {
+async function fetchAllPodcasts({ page = 1, limit = 6, search = "" } = {}) {
     try {
         const params = { page, limit };
         if (search && search.trim() !== "") {
@@ -18,7 +18,7 @@ async function fetchAllPodcasts({ page = 1, limit = 10, search = "" } = {}) {
 
 async function fetchTotalCount(search = "") {
     try {
-        const params = { limit: 10000 };
+        const params = { limit: 100 };
         if (search && search.trim() !== "") {
             params.search = search;
         }
@@ -33,7 +33,7 @@ async function fetchTotalCount(search = "") {
 async function fetchPodcastData(queryParams = {}) {
     try {
         const page = parseInt(queryParams.page) || 1;
-        const limit = parseInt(queryParams.limit) || 10;
+        const limit = parseInt(queryParams.limit) || 6;
         const search = queryParams.search?.toLowerCase() || "";
         const [pagedResults, totalCount] = await Promise.all([
             fetchAllPodcasts({ page, limit, search }),
@@ -53,4 +53,5 @@ async function fetchPodcastData(queryParams = {}) {
 module.exports = {
     fetchPodcastData,
     fetchAllPodcasts,
+    fetchTotalCount
 };

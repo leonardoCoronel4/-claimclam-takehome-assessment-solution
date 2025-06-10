@@ -4,10 +4,12 @@ const { buildSchema } = require("graphql");
 const dotenv = require("dotenv");
 const axios = require("axios");
 const rateLimit = require("express-rate-limit");
+const { fetchTotalCount, fetchAllPodcasts } = require("./services/podcastService");
 
 dotenv.config();
 
 const BASE_URL = process.env.PODCAST_API_URL;
+const app = express();
 
 const schema = buildSchema(`
   type PodcastImages {
@@ -41,37 +43,19 @@ const schema = buildSchema(`
   }
 `);
 
-async function getTotalCount(search = "") {
-    try {
-        const params = { limit: 10000 };
-        if (search && search.trim() !== "") {
-            params.search = search;
-        }
-        const response = await axios.get(`${BASE_URL}/podcasts`, { params });
-        return response.data.length;
-    } catch (error) {
-        //console.error("Error counting podcasts:", error);
-        return 0;
-    }
-}
-
-const root = {
+const root = { //resolver
     podcasts: async ({ page = 1, limit = 10, search = "" }) => {
         try {
-            const params = { page, limit };
-            if (search && search.trim() !== "") {
-                params.search = search;
-            }
-
+            const params = { page, limit, search };
             const [podcastsResponse, totalItems] = await Promise.all([
-                axios.get(`${BASE_URL}/podcasts`, { params }),
-                getTotalCount(search),
+                fetchAllPodcasts(params),
+                fetchTotalCount(search),
             ]);
 
             const totalPages = Math.ceil(totalItems / limit);
 
             return {
-                podcasts: podcastsResponse.data,
+                podcasts: podcastsResponse,
                 totalItems,
                 totalPages,
                 currentPage: page,
@@ -83,7 +67,6 @@ const root = {
     },
 };
 
-const app = express();
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes

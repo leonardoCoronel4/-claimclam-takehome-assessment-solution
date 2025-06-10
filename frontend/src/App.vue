@@ -81,7 +81,7 @@ const fetchPodcastData = async (term = "") => {
                     `Too many requests. Please wait ${retryAfter} and try again.`
                 );
             } else if (response.status === 404) {
-                throw new Error("No podcasts were found with those filters.");
+                throw new Error("Page not found. Please try again later.");
             } else if (response.status >= 500) {
                 throw new Error("Server error. Please try again later.");
             } else {
@@ -128,7 +128,6 @@ watch(searchTerm, (newTerm) => {
 
 function onSearch(term) {
     searchTerm.value = term;
-    page.value = 1;
 }
 
 watch(page, (newPage) => {
